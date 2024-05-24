@@ -1,16 +1,22 @@
 public class PacMan {
-    private int numLives = 4;
-    private int xPos = 0;
-    private int yPos = 0;
-    Game game = new Game();
+    private int numLives = 3;
+    private int xPos = 2;
+    private int yPos = 1;
+    char sprite = 'C';
+    Game game;
 
+    PacMan(Game g) {
+        game = g;
+    }
     public void move(int x, int y) {
         xPos = x;
         yPos = y;
     }
 
     public void eat(String item) {
-
+        if (item == 'pellet') {
+            game.pellets.removePellet(xPos, yPos);
+        }
     }
 
     public String getPosition() {
@@ -18,31 +24,52 @@ public class PacMan {
     }
 
     public void move(char c);{
-        if (c == "u") {
+        if (c == "w") {
             yPos++;
-        } else if (c == "d") {
+            updateSprite(3);
+        } else if (c == "s") {
             yPos--;
-        } else if (c == "l") {
+            updateSprite(1);
+        } else if (c == "a") {
             xPos--;
-        } else if (c == "r") {
+            updateSprite(2);
+        } else if (c == "d") {
             xPos++;
+            updateSprite(0);
         }
     }
 
     public void avoidCollision() {
-        // Skibidi?
+        if (xPos >= Maze.getWidth()) {
+            xPos--;
+        } else if (xPos < 0) {
+            xPos++;
+        }
+        
+        if (yPos < 0) {
+            yPos++;
+        } else if (yPos >= Maze.getLength()) {
+            yPos--;
+        }
     }
 
     public void eat(Ghost ghost) {
-        if (Ghost.isVulnerable == true) {
-            Ghost.hurtPacman();
-            loseALife();
-        } else {
-            Ghost.isAlive = false;
-        }
+        
     }
 
     public void loseALife() {
         numLives--;
+    }
+
+    public void updateSprite(int x) {
+        if (x == 0) {
+            sprite = 'C';
+        } else if (x == 1) {
+            sprite = 'X'
+        } else if (x == 2) {
+            sprite = 'D';
+        } else if (x == 3) {
+            sprite = 'U';
+        }
     }
 }
